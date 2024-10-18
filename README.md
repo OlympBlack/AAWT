@@ -1,66 +1,116 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# MySchoolManager | Projet d'Aspect Avancé des Technologie Web IFRI 2024 - 2025 GROUPE 2
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Description
 
-## About Laravel
+MySchoolManager est une plateforme de gestion d'établissements scolaires développée en Laravel. Elle permet de gérer les élèves, les enseignants, les inscriptions, les notes, et bien plus, avec une interface moderne et intuitive.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Installation
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Prérequis
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Avant de commencer, assurez-vous d'avoir installé :
 
-## Learning Laravel
+- PHP >= 8.2.x
+- Composer
+- MySQL ou un autre serveur de base de données compatible
+- Node.js & npm (pour la gestion des dépendances front-end)
+- OpenSSL activé dans PHP (pour les connexions sécurisées)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Étapes d'installation
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. **Cloner le projet :**
+   ```bash
+   git clone https://github.com/OlympBlack/AAWT-Groupe2.git
+   ```
+2. **Accéder au dossier du projet :**
+   ```bash
+   cd myschoolmanager
+   ```
+3. **Installer les dépendances PHP :**
+    ```bash
+    composer install
+    ```
+4. **Configurer les variables d'environnement :**
+```bash
+    cp .env.example .env 
+  ```
+5. **Exécuter les migrations  :**
+```bash
+     php artisan migrate 
+ ```
+6. **Installer les dépendances front-end :**
+```bash
+npm install
+npm run dev
+```
+7. **Démarrer le serveur local :**
+Vous pouvez maintenant démarrer le serveur Laravel avec :
+```bash  
+php artisan serve 
+```
+- L'application sera accessible sur ``` http://localhost:8000 ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Comment travailler sur le projet
 
-## Laravel Sponsors
+Pour travailler sur le projet, suivez les étapes ci-dessous :
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Assurez-vous d'obtenir l'autorisation nécessaire pour travailler sur le projet.
+    
+- Clonez le référentiel sur votre machine si ce n'est pas déjà fait.
+    
+- Avant de commencer à travailler sur une nouvelle fonctionnalité, assurez-vous de créer une branche distincte pour celle-ci.
 
-### Premium Partners
+- Utilisez la commande suivante pour créer une nouvelle branche à partir de la branche principale (main)
+    
+```bash
+    git checkout -b nom_de_votre_branche
+```	
+    
+- Travaillez sur votre branche en effectuant les modifications nécessaires.
+    
+- Une fois que vous avez terminé les modifications, ajoutez les fichiers modifiés au suivi Git en utilisant la commande : ``` git add ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+- Validez vos modifications en créant un commit descriptif : 
+```bash
+git commit -m "Description du commit"
+```	
 
-## Contributing
+- Poussez votre branche sur le référentiel distant en utilisant la commande :
+```bash
+git push origin nom_de_votre_branche
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+-  Une fois que vous êtes satisfait de vos modifications et que vous souhaitez les intégrer au projet principal, créez une demande de fusion (pull request) sur la plateforme de gestion des projets.
 
-## Code of Conduct
+- Attendez la revue de code et les commentaires des autres membres de l'équipe.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Effectuez les ajustements nécessaires en fonction des commentaires reçus et continuez à pousser vos modifications sur votre branche.
 
-## Security Vulnerabilities
+- Une fois que votre demande de fusion a été approuvée, votre branche peut être fusionnée avec la branche principale (main) du projet.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## L'erreur à éviter
 
-## License
+Afin de maintenir un flux de travail efficace et de garantir la qualité du code, voici quelques erreurs à éviter lors de votre contribution au projet :
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Ne travaillez pas directement sur la branche principale (main) du projet.
+    
+- Utilisez des branches distinctes pour chaque fonctionnalité.
+    
+- N'oubliez pas de créer des commits cohérents et descriptifs pour chaque modification.
+    
+- N'oubliez pas de tester vos modifications avant de les pousser sur le référentiel distant.
+    
+- Ne fusionnez pas votre propre branche sans passer par une revue de code par d'autres membres de l'équipe.
+    
+- Prenez en compte les commentaires et les suggestions de l'équipe lors de la revue de code et apportez les ajustements nécessaires.
+
+- En suivant ces bonnes pratiques, nous pourrons maintenir un flux de travail efficace et garantir la qualité du code produit.
+
+## Aide
+
+Vous vous sentez pas à l'aise avec les commandes ? Vous pouvez faire les choses avec l'interface graphique de l'éditeur VS Code.
+
+## Plus d'aide 
+
+Contactez les autres membres de l'équipe
+
