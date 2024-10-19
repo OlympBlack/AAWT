@@ -24,7 +24,7 @@ Avant de commencer, assurez-vous d'avoir installé :
    ```
 2. **Accéder au dossier du projet :**
    ```bash
-   cd myschoolmanager
+   cd AAWT-Groupe2
    ```
 3. **Installer les dépendances PHP :**
     ```bash
