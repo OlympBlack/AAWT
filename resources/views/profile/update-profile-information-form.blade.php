@@ -52,13 +52,20 @@
             </div>
         @endif
 
-        <!-- Name -->
-        <div class="col-span-6 sm:col-span-4">
-            <x-label for="name" value="{{ __('Name') }}" />
-            <x-input id="name" type="text" class="mt-1 block w-full" wire:model="state.name" required autocomplete="name" />
-            <x-input-error for="name" class="mt-2" />
-        </div>
+        
 
+        <!-- Lastname -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="lastname" value="{{ __('Nom') }}" />
+            <x-input id="lastname" type="text" class="mt-1 block w-full" wire:model="state.lastname" required autocomplete="family-name" />
+            <x-input-error for="lastname" class="mt-2" />
+        </div>
+        <!-- Firstname -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="firstname" value="{{ __('Prénom') }}" />
+            <x-input id="firstname" type="text" class="mt-1 block w-full" wire:model="state.firstname" required autocomplete="given-name" />
+            <x-input-error for="firstname" class="mt-2" />
+        </div>
         <!-- Email -->
         <div class="col-span-6 sm:col-span-4">
             <x-label for="email" value="{{ __('Email') }}" />
@@ -80,6 +87,13 @@
                     </p>
                 @endif
             @endif
+        </div>
+
+        <!-- Phone -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="phone" value="{{ __('Téléphone') }}" />
+            <x-input id="phone" type="tel" class="mt-1 block w-full" wire:model="state.phone" autocomplete="tel" />
+            <x-input-error for="phone" class="mt-2" />
         </div>
     </x-slot>
 
