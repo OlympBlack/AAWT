@@ -36,7 +36,7 @@ Avant de commencer, assurez-vous d'avoir installé :
   ```
 5. **Exécuter les migrations  :**
 ```bash
-     php artisan migrate 
+     php artisan migrate --seed
  ```
 6. **Installer les dépendances front-end :**
 ```bash
