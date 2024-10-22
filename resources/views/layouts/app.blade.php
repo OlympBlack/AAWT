@@ -5,11 +5,23 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'MySchoolManager') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+        <!-- Material Design Icons -->
+        <link rel="stylesheet" href="{{ asset('vendor/mdi/css/materialdesignicons.min.css') }}">
+
+        <!-- Animate.css -->
+        <link rel="stylesheet" href="{{ asset('vendor/animate/animate.css') }}">
+        
+        <!-- SweetAlert2 -->
+        <link rel="stylesheet" href="{{ asset('vendor/sweetalert2/sweetalert2.all.min.css') }}">
+        
+        <!-- Toastr -->
+        <link rel="stylesheet" href="{{ asset('vendor/toastr/toastr.min.css') }}">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -41,5 +53,15 @@
         @stack('modals')
 
         @livewireScripts
+
+        <!-- SweetAlert2 -->
+        <script src="{{ asset('vendor/sweetalert2/sweetalert2.all.min.js') }}"></script>
+
+        <!-- Toastr -->
+        <script src="{{ asset('vendor/toastr/toastr.min.js') }}"></script>
+        
+        <!-- Chart.js -->
+        <script src="{{ asset('vendor/chartjs/chartjs.min.js') }}"></script>
+
     </body>
 </html>

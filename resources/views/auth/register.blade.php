@@ -8,7 +8,7 @@
 
         <form method="POST" action="{{ route('register') }}">
             @csrf
-            <div >
+             <div >
                 <x-label for="lastname" value="{{ __('Nom') }}" />
                 <x-input id="lastname" class="block mt-1 w-full" type="text" name="lastname" :value="old('lastname')" required autocomplete="family-name" />
             </div>

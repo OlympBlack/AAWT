@@ -34,9 +34,9 @@ Avant de commencer, assurez-vous d'avoir installé :
 ```bash
     cp .env.example .env 
   ```
-5. **Exécuter les migrations  :**
+5. **Exécuter les migrations et les seeders :**
 ```bash
-     php artisan migrate 
+     php artisan migrate --seed
  ```
 6. **Installer les dépendances front-end :**
 ```bash
