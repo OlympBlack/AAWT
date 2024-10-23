@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('firstname'); // Nouveau champ prénom
-            $table->string('lastname');  // Nouveau champ nom de famille
-            $table->string('phone')->nullable(); // Nouveau champ numéro de téléphone
+            $table->string('firstname'); 
+            $table->string('lastname');
+            $table->string('phone')->nullable(); 
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
