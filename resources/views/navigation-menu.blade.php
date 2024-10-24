@@ -15,6 +15,29 @@
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('series.index') }}" :active="request()->is('series*')">
+                        {{ __('Séries') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('classrooms.index') }}" :active="request()->is('classrooms*')">
+                        {{ __('Classes') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('subjects.index') }}" :active="request()->is('subjects*')">
+                        {{ __('Matières') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('semesters.index') }}" :active="request()->is('semesters*')">
+                        {{ __('Semestres') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('school-years.index') }}" :active="request()->is('school-years*')">
+                        {{ __('Années Scolaires') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('payement-types.index') }}" :active="request()->is('payement-types*')">
+                        {{ __('Types Payements') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('payement-modes.index') }}" :active="request()->routeIs('payement-modes*')">
+                        {{ __('Modes Payements') }}
+                    </x-nav-link>
+                    
+                    
                 </div>
             </div>
 
