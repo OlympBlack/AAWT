@@ -41,6 +41,7 @@ Avant de commencer, assurez-vous d'avoir installé :
 6. **Installer les dépendances front-end :**
 ```bash
 npm install
+npm run build
 npm run dev
 ```
 7. **Démarrer le serveur local :**
