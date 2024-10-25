@@ -15,7 +15,16 @@
                     <strong>Coefficient:</strong> {{ $subject->coefficient }}
                 </div>
                 <div class="mb-4">
-                    <strong>Classe:</strong> {{ $subject->classroom->wording }}
+                    <strong>Classe:</strong> {{ $subject->classroom->wording }} {{ $subject->classroom->serie->wording }}
+                </div>
+                <!-- Ajouter cette section pour afficher le professeur -->
+                <div class="mb-4">
+                    <strong>Professeur:</strong> 
+                    @if($subject->teachers->isNotEmpty())
+                        {{ $subject->teachers->first()->firstname }} {{ $subject->teachers->first()->lastname }}
+                    @else
+                        Non assigné
+                    @endif
                 </div>
                 <div class="flex items-center justify-end mt-4">
                     <x-button>
@@ -37,4 +46,3 @@
         </div>
     </div>
 </x-app-layout>
-

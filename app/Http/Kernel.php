@@ -15,6 +15,18 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         // ...
-        'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        'role' => \App\Http\Middleware\RoleMiddleware::class,
+    ];
+
+    /**
+     * The application's middleware groups.
+     *
+     * @var array
+     */
+    protected $middlewareGroups = [
+        'web' => [
+            // ...
+            \App\Http\Middleware\EnsurePasswordChanged::class,
+        ],
     ];
 }

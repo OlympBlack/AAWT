@@ -35,7 +35,7 @@ class SchoolYearController extends Controller
 
         SchoolYear::create($request->only('wording'));
 
-        return redirect()->route('school_years.index')
+        return redirect()->route('school-years.index')
             ->with('success', 'Année scolaire créée avec succès.');
     }
 
@@ -46,7 +46,7 @@ class SchoolYearController extends Controller
     {
         $schoolYear = SchoolYear::find($id);
         if (!$schoolYear) {
-            return redirect()->route('school_years.index')->with('error', 'Année scolaire non trouvée.');
+            return redirect()->route('school-years.index')->with('error', 'Année scolaire non trouvée.');
         }
         return view('school_years.show', compact('schoolYear'));
     }
@@ -58,7 +58,7 @@ class SchoolYearController extends Controller
     {
         $schoolYear = SchoolYear::find($id);
         if (!$schoolYear) {
-            return redirect()->route('school_years.index')->with('error', 'Année scolaire non trouvée.');
+            return redirect()->route('school-years.index')->with('error', 'Année scolaire non trouvée.');
         }
         return view('school_years.edit', compact('schoolYear'));
     }
@@ -74,7 +74,7 @@ class SchoolYearController extends Controller
 
         $schoolYear->update($request->only('wording'));
 
-        return redirect()->route('school_years.index')
+        return redirect()->route('school-years.index')
             ->with('success', 'Année scolaire mise à jour avec succès.');
     }
 
@@ -85,11 +85,11 @@ class SchoolYearController extends Controller
     {
         $schoolYear = SchoolYear::find($id);
         if (!$schoolYear) {
-            return redirect()->route('school_years.index')->with('error', 'Année scolaire non trouvée.');
+            return redirect()->route('school-years.index')->with('error', 'Année scolaire non trouvée.');
         }
         $schoolYear->delete();
 
-        return redirect()->route('school_years.index')
+        return redirect()->route('school-years.index')
             ->with('success', 'Année scolaire supprimée avec succès.');
     }
 }

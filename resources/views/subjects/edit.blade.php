@@ -24,7 +24,18 @@
                         <select id="classroom_id" name="classroom_id" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                             @foreach($classrooms as $classroom)
                                 <option value="{{ $classroom->id }}" {{ $subject->classroom_id == $classroom->id ? 'selected' : '' }}>
-                                    {{ $classroom->wording }}
+                                    {{ $classroom->wording }} {{ $classroom->serie->wording }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <x-label for="teacher_id" value="{{ __('Professeur') }}" />
+                        <select id="teacher_id" name="teacher_id" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                            <option value="">Sélectionner un professeur</option>
+                            @foreach($teachers as $teacher)
+                                <option value="{{ $teacher->id }}" {{ $subject->teachers->contains($teacher->id) ? 'selected' : '' }}>
+                                    {{ $teacher->firstname }} {{ $teacher->lastname }}
                                 </option>
                             @endforeach
                         </select>
@@ -39,4 +50,3 @@
         </div>
     </div>
 </x-app-layout>
-

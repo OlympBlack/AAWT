@@ -4,6 +4,13 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use App\Models\Role;
+use App\Models\Serie;
+use App\Models\Classroom;
+use App\Models\Subject;
+use App\Models\Schoolyear;
+use App\Models\Registration;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,19 +19,29 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Exécuter le RoleSeeder en premier
-        $this->call(RoleSeeder::class);
+        // Créer les rôles
+        Role::create(['id' => 1, 'wording' => 'admin']);
+        Role::create(['id' => 2, 'wording' => 'parent']);
+        Role::create(['id' => 3, 'wording' => 'teacher']);
+        Role::create(['id' => 4, 'wording' => 'student']);
 
-        // Créer un utilisateur admin
-        User::factory()->create([
+        // Créer l'admin par défaut
+        User::factory()->count(50)->create();
+        User::create([
             'firstname' => 'John',
             'lastname' => 'Doe',
-            'role_id' => 1, // ID du rôle admin
-            'email' => 'test@example.com',
-            'password' => "password123"
+            'phone' => '1234567890',
+            'email' => 'admin@example.com',
+            'email_verified_at' => now(),
+            'password' => bcrypt('password'),
+            'remember_token' => Str::random(10),
+            'role_id' => 1,
         ]);
 
-        // Créer quelques utilisateurs supplémentaires avec des rôles aléatoires
-        User::factory(10)->create();
+
+        // Créer des séries, classes et matières
+        Serie::factory()->count(5)->create();
+        Subject::factory()->count(5)->create();
+        Schoolyear::factory()->count(5)->create();
     }
 }

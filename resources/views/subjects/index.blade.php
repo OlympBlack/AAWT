@@ -25,6 +25,7 @@
                                 <th scope="col" class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Libellé</th>
                                 <th scope="col" class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Coefficient</th>
                                 <th scope="col" class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Classe</th>
+                                <th scope="col" class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Professeur</th>
                                 <th scope="col" class="py-3 px-6 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
@@ -34,7 +35,14 @@
                                     <td class="py-4 px-6 whitespace-nowrap">{{ $subject->id }}</td>
                                     <td class="py-4 px-6 whitespace-nowrap">{{ $subject->wording }}</td>
                                     <td class="py-4 px-6 whitespace-nowrap">{{ $subject->coefficient }}</td>
-                                    <td class="py-4 px-6 whitespace-nowrap">{{ $subject->classroom->wording }}</td>
+                                    <td class="py-4 px-6 whitespace-nowrap">{{ $subject->classroom->wording }} {{ $subject->classroom->serie->wording }}</td>
+                                    <td class="py-4 px-6 text-left whitespace-nowrap">
+                                        @if($subject->teachers->isNotEmpty())
+                                            {{ $subject->teachers->first()->firstname }} {{ $subject->teachers->first()->lastname }}
+                                        @else
+                                            Non assigné
+                                        @endif
+                                    </td>
                                     <td class="py-4 px-6 text-right whitespace-nowrap space-x-2">
                                         <a href="{{ route('subjects.show', $subject->id) }}" class="text-blue-600 hover:text-blue-900">
                                             <span class="mdi mdi-eye bg-blue-100 p-1 rounded"></span>
@@ -59,4 +67,3 @@
         </div>
     </div>
 </x-app-layout>
-

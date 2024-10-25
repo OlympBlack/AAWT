@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('school_year_id')->constrained('school_years');
             $table->foreignId('semester_id')->constrained('semesters');
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Subject;
 use App\Models\Classroom;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class SubjectController extends Controller
@@ -23,7 +24,10 @@ class SubjectController extends Controller
     public function create()
     {
         $classrooms = Classroom::all();
-        return view('subjects.create', compact('classrooms'));
+        $teachers = User::whereHas('role', function($query) {
+            $query->where('wording', 'teacher');
+        })->get();
+        return view('subjects.create', compact('classrooms', 'teachers'));
     }
 
     /**
@@ -35,9 +39,11 @@ class SubjectController extends Controller
             'wording' => 'required|string|max:255',
             'coefficient' => 'required|numeric|min:0',
             'classroom_id' => 'required|exists:classrooms,id',
+            'teacher_id' => 'required|exists:users,id',
         ]);
 
-        Subject::create($request->all());
+        $subject = Subject::create($request->except('teacher_id'));
+        $subject->teachers()->attach($request->teacher_id, ['classroom_id' => $request->classroom_id]);
 
         return redirect()->route('subjects.index')
             ->with('success', 'Matière créée avec succès.');
@@ -60,12 +66,15 @@ class SubjectController extends Controller
      */
     public function edit($id)
     {
-        $subject = Subject::find($id);
+        $subject = Subject::with('teachers')->find($id);
         if (!$subject) {
             return redirect()->route('subjects.index')->with('error', 'Matière non trouvée.');
         }
         $classrooms = Classroom::all();
-        return view('subjects.edit', compact('subject', 'classrooms'));
+        $teachers = User::whereHas('role', function($query) {
+            $query->where('wording', 'teacher');
+        })->get();
+        return view('subjects.edit', compact('subject', 'classrooms', 'teachers'));
     }
 
     /**
@@ -82,9 +91,11 @@ class SubjectController extends Controller
             'wording' => 'required|string|max:255',
             'coefficient' => 'required|numeric|min:0',
             'classroom_id' => 'required|exists:classrooms,id',
+            'teacher_id' => 'required|exists:users,id',
         ]);
 
-        $subject->update($request->all());
+        $subject->update($request->except('teacher_id'));
+        $subject->teachers()->sync([$request->teacher_id => ['classroom_id' => $request->classroom_id]]);
 
         return redirect()->route('subjects.index')
             ->with('success', 'Matière mise à jour avec succès.');

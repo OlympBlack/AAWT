@@ -22,7 +22,7 @@
                     <div class="flex justify-between items-center">
                         <div class="info">
                             <h6 class="text-sm text-gray-400">Elèves</h6>
-                            <h5 class="text-xl font-semibold">{{ count($users->where('role', 'student')) }}</h5>
+                            <h5 class="text-xl font-semibold">{{ count($users->where('role.wording', 'student')) }}</h5>
                         </div>
                         <div class="card-img p-2">
                             <img src="{{ asset('images/dash-icon-01.svg') }}" alt="student" class="h-12 w-12">
@@ -35,7 +35,7 @@
                     <div class="flex justify-between items-center">
                         <div class="info">
                             <h6 class="text-sm text-gray-400">Professeurs</h6>
-                            <h5 class="text-xl font-semibold">{{ count($users->where('role', 'teacher')) }}</h5>
+                            <h5 class="text-xl font-semibold">{{ count($users->where('role.wording', 'teacher')) }}</h5>
                         </div>
                         <div class="card-img p-2">
                             <img src="{{ asset('images/teacher.svg') }}" alt="teacher" class="h-12 w-12">

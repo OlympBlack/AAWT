@@ -10,6 +10,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -25,12 +26,13 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'firstname',       
-        'lastname',       
-        'phone',                    
+        'firstname',
+        'lastname',
         'email',
+        'phone',
         'password',
-        'role_id',        
+        'role_id',
+        'password_change_required',
         'profile_photo_path',
     ];
 
@@ -86,5 +88,12 @@ class User extends Authenticatable
     public function notes(): HasMany
     {
         return $this->hasMany(Note::class);
+    }
+
+    public function teachingSubjects(): BelongsToMany
+    {
+        return $this->belongsToMany(Subject::class, 'subject_teacher')
+                    ->withPivot('classroom_id')
+                    ->withTimestamps();
     }
 }
