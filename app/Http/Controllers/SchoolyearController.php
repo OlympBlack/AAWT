@@ -29,14 +29,18 @@ class SchoolYearController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'wording' => 'required|string|max:255|unique:school_years',
+        $validatedData = $request->validate([
+            'wording' => 'required|string|max:255',
+            'is_current' => 'boolean',
         ]);
 
-        SchoolYear::create($request->only('wording'));
+        if ($validatedData['is_current']) {
+            SchoolYear::where('is_current', true)->update(['is_current' => false]);
+        }
 
-        return redirect()->route('school-years.index')
-            ->with('success', 'Année scolaire créée avec succès.');
+        SchoolYear::create($validatedData);
+
+        return redirect()->route('school-years.index')->with('success', 'Année scolaire créée avec succès.');
     }
 
     /**
@@ -66,16 +70,25 @@ class SchoolYearController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SchoolYear $schoolYear)
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'wording' => 'required|string|max:255|unique:school_years,wording,' . $schoolYear->id,
+        $schoolYear = SchoolYear::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'wording' => 'required|string|max:255',
+            'is_current' => 'nullable',
         ]);
 
-        $schoolYear->update($request->only('wording'));
+        // Convertir la valeur de is_current en booléen
+        $validatedData['is_current'] = $request->has('is_current');
 
-        return redirect()->route('school-years.index')
-            ->with('success', 'Année scolaire mise à jour avec succès.');
+        if ($validatedData['is_current'] && !$schoolYear->is_current) {
+            SchoolYear::where('is_current', true)->update(['is_current' => false]);
+        }
+
+        $schoolYear->update($validatedData);
+
+        return redirect()->route('school-years.index')->with('success', 'Année scolaire mise à jour avec succès.');
     }
 
     /**
@@ -91,5 +104,11 @@ class SchoolYearController extends Controller
 
         return redirect()->route('school-years.index')
             ->with('success', 'Année scolaire supprimée avec succès.');
+    }
+
+    public function toggleCurrent($id)
+    {
+        SchoolYear::toggleCurrent($id);
+        return redirect()->back()->with('success', 'Année scolaire courante mise à jour avec succès.');
     }
 }

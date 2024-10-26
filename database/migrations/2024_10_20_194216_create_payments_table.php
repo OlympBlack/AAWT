@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('payment_type_id')->constrained('payment_types');
             $table->foreignId('payment_mode_id')->constrained('payment_modes');
             $table->foreignId('classroom_id')->constrained('classrooms');
+            $table->foreignId('registration_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

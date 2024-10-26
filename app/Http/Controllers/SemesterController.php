@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Semester;
 use App\Models\SchoolYear;
+use App\Models\SchoolYearSemester;
 use Illuminate\Http\Request;
 
 class SemesterController extends Controller
@@ -106,5 +107,22 @@ class SemesterController extends Controller
 
         return redirect()->route('semesters.index')
             ->with('success', 'Semestre supprimé avec succès.');
+    }
+
+    public function toggleActive(Request $request, $id)
+    {
+        $request->validate([
+            'school_year_id' => 'required|exists:school_years,id',
+        ]);
+
+        $schoolYear = SchoolYear::findOrFail($request->school_year_id);
+        
+        if (!$schoolYear->is_current) {
+            return redirect()->back()->with('error', 'Vous ne pouvez activer un semestre que pour l\'année scolaire courante.');
+        }
+
+        SchoolYearSemester::setActive($request->school_year_id, $id);
+
+        return redirect()->back()->with('success', 'Semestre activé avec succès pour l\'année scolaire courante.');
     }
 }

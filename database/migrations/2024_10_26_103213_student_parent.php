@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notifications', function (Blueprint $table) {
+        Schema::create('student_parent', function (Blueprint $table) {
             $table->id();
-            $table->text('content');
-            $table->foreignId('receiver_id')->constrained('users');
-            $table->foreignId('sender_id')->constrained('users');
-            $table->boolean('is_read')->default(false);
+            $table->foreignId('student_id')->constrained('users');
+            $table->foreignId('parent_id')->constrained('users');
             $table->timestamps();
+
+            $table->unique(['student_id', 'parent_id']);
         });
     }
 
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('notifications');
+        Schema::dropIfExists('student_parent');
     }
 };

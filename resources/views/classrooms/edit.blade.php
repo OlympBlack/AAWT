@@ -8,6 +8,19 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
+                @if ($errors->any())
+                <div class="mb-4">
+                    <div class="font-medium text-red-600">
+                        {{ __('Whoops! Something went wrong.') }}
+                    </div>
+            
+                    <ul class="mt-3 list-disc list-inside text-sm text-red-600">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
                 <form action="{{ route('classrooms.update', $classroom->id) }}" method="POST">
                     @csrf
                     @method('PUT')
@@ -21,6 +34,7 @@
                     </div>
                     <div class="mb-4">
                         <x-label for="serie_id" value="{{ __('Série') }}" />
+                        <option value="">Sélectionner une série</option>
                         <select id="serie_id" name="serie_id" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                             @foreach($series as $serie)
                                 <option value="{{ $serie->id }}" {{ $classroom->serie_id == $serie->id ? 'selected' : '' }}>

@@ -13,9 +13,7 @@ class PaymentType extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'wording',
-    ];
+    protected $fillable = ['wording', 'is_partial'];
 
     /**
      * Les attributs qui doivent être convertis en types natifs.

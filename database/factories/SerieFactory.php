@@ -9,7 +9,7 @@ class SerieFactory extends Factory
     public function definition(): array
     {
         return [
-            'wording' => $this->faker->randomElement(['Scientifique', 'Littéraire', 'Économique et Social', 'Technologique']),
+            'wording' => $this->faker->randomElement(['A', 'B', 'C', 'D']),
         ];
     }
 }

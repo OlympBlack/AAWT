@@ -90,10 +90,33 @@ class User extends Authenticatable
         return $this->hasMany(Note::class);
     }
 
-    public function teachingSubjects(): BelongsToMany
+    public function teachingSubjects()
     {
         return $this->belongsToMany(Subject::class, 'subject_teacher')
-                    ->withPivot('classroom_id')
-                    ->withTimestamps();
+                    ->withPivot('classroom_id');
+    }
+
+    public function children(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'student_parent', 'parent_id', 'student_id');
+    }
+
+    public function parents(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'student_parent', 'student_id', 'parent_id');
+    }
+
+    public function isParent(): bool
+    {
+        return $this->role_id === 2;
+    }
+
+    public function isStudent(): bool
+    {
+        return $this->role_id === 4;
+    }
+    public function getFullNameAttribute()
+    {
+        return "{$this->firstname} {$this->lastname}";
     }
 }

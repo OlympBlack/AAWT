@@ -23,6 +23,7 @@
                             <tr>
                                 <th scope="col" class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
                                 <th scope="col" class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Libellé</th>
+                                <th scope="col" class="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
                                 <th scope="col" class="py-3 px-6 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
@@ -31,6 +32,18 @@
                                 <tr class="hover:bg-gray-50">
                                     <td class="py-4 px-6 whitespace-nowrap">{{ $schoolYear->id }}</td>
                                     <td class="py-4 px-6 whitespace-nowrap">{{ $schoolYear->wording }}</td>
+                                    <td class="py-4 px-6 whitespace-nowrap">
+                                        
+                                        @if($schoolYear->is_current)
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                Courante
+                                            </span>
+                                        @else
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                                Inactive
+                                            </span>
+                                        @endif
+                                    </td>
                                     <td class="py-4 px-6 text-right whitespace-nowrap space-x-2">
                                         <a href="{{ route('school-years.show', $schoolYear->id) }}" class="text-blue-600 hover:text-blue-900">
                                             <span class="mdi mdi-eye bg-blue-100 p-1 rounded"></span>
@@ -55,4 +68,3 @@
         </div>
     </div>
 </x-app-layout>
-

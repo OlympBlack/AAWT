@@ -10,6 +10,7 @@ use App\Models\Classroom;
 use App\Models\Subject;
 use App\Models\Schoolyear;
 use App\Models\Registration;
+use App\Models\PaymentType;
 use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
@@ -25,23 +26,36 @@ class DatabaseSeeder extends Seeder
         Role::create(['id' => 3, 'wording' => 'teacher']);
         Role::create(['id' => 4, 'wording' => 'student']);
 
-        // Créer l'admin par défaut
-        User::factory()->count(50)->create();
-        User::create([
-            'firstname' => 'John',
-            'lastname' => 'Doe',
-            'phone' => '1234567890',
-            'email' => 'admin@example.com',
-            'email_verified_at' => now(),
-            'password' => bcrypt('password'),
-            'remember_token' => Str::random(10),
-            'role_id' => 1,
+        // Créer des utilisateurs et associer des rôles aléatoires
+        User::factory()->count(20)->create();
+
+       
+            User::create([
+                'firstname' => 'John',
+                'lastname' => 'Doe',
+                'phone' => '1234567890',
+                'email' => 'admin@example.com',
+                'email_verified_at' => now(),
+                'password' => bcrypt('password'),
+                'remember_token' => Str::random(10),
+                'role_id' => 1,
+            ]);
+        
+        // Créer des séries, classes et matières
+        Serie::factory()->count(1)->create();
+        Subject::factory()->count(5)->create();
+        Schoolyear::factory()->count(3)->create();
+        Classroom::factory()->count(1)->create(); // Ajout de la création de Classroom
+
+        // Créer les types de paiement
+        PaymentType::create([
+            'wording' => 'Paiement total',
+            'is_partial' => false,
         ]);
 
-
-        // Créer des séries, classes et matières
-        Serie::factory()->count(5)->create();
-        Subject::factory()->count(5)->create();
-        Schoolyear::factory()->count(5)->create();
+        PaymentType::create([
+            'wording' => 'Paiement par tranche',
+            'is_partial' => true,
+        ]);
     }
 }

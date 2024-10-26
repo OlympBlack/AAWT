@@ -8,23 +8,40 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
+                @if ($errors->any())
+                    <div class="mb-4">
+                        <div class="font-medium text-red-600">
+                            {{ __('Whoops! Something went wrong.') }}
+                        </div>
+
+                        <ul class="mt-3 list-disc list-inside text-sm text-red-600">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form method="POST" action="{{ route('teacher.store') }}">
                     @csrf
                     <div class="mb-4">
                         <x-label for="firstname" value="{{ __('Prénom') }}" />
-                        <x-input id="firstname" class="block mt-1 w-full" type="text" name="firstname" :value="old('firstname')" required autofocus />
+                        <x-input id="firstname" class="block mt-1 w-full" type="text" name="firstname"
+                            :value="old('firstname')" required autofocus />
                     </div>
                     <div class="mb-4">
                         <x-label for="lastname" value="{{ __('Nom') }}" />
-                        <x-input id="lastname" class="block mt-1 w-full" type="text" name="lastname" :value="old('lastname')" required />
+                        <x-input id="lastname" class="block mt-1 w-full" type="text" name="lastname"
+                            :value="old('lastname')" required />
                     </div>
                     <div class="mb-4">
                         <x-label for="email" value="{{ __('Email') }}" />
-                        <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+                        <x-input id="email" class="block mt-1 w-full" type="email" name="email"
+                            :value="old('email')" required />
                     </div>
                     <div class="mb-4">
                         <x-label for="phone" value="{{ __('Téléphone') }}" />
-                        <x-input id="phone" class="block mt-1 w-full" type="text" name="phone" :value="old('phone')" required />
+                        <x-input id="phone" class="block mt-1 w-full" type="text" name="phone"
+                            :value="old('phone')" required />
                     </div>
                     <div class="flex items-center justify-end mt-4">
                         <x-button class="ml-4">
@@ -36,4 +53,3 @@
         </div>
     </div>
 </x-app-layout>
-

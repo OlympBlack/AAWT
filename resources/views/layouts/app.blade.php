@@ -18,11 +18,6 @@
     <!-- Animate.css -->
     <link rel="stylesheet" href="{{ asset('cdn/animate/animate.css') }}">
 
-    <!-- SweetAlert2 -->
-    <link rel="stylesheet" href="{{ asset('cdn/sweetalert/sweetalert2.all.min.css') }}">
-
-    <!-- Toastr -->
-
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -56,8 +51,7 @@
 
     @livewireScripts
 
-    <!-- SweetAlert2 -->
-    <script src="{{ asset('cdn/sweetalert/sweetalert2.all.min.js') }}"></script>
+    
     <!-- Chart.js -->
     <script src="{{ asset('cdn/chartjs/chartjs.min.js') }}"></script>
     @if (session('success') || session('error') || session('info') || session('warning'))
@@ -81,6 +75,7 @@
         });
     </script>
 @endif
+@stack('scripts')
 </body>
 
 </html>

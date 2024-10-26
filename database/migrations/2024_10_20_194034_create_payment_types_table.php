@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('payment_types', function (Blueprint $table) {
             $table->id();
             $table->string('wording');
+            $table->boolean('is_partial')->default(false);
             $table->timestamps();
         });
     }

@@ -11,10 +11,15 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         
-        if ($user->role && $user->role->name === 'admin') {
-            return view('dashboard');
-        } else {
-            return view('parent.dashboard');
+        switch ($user->role_id) {
+            case 1:
+                return redirect()->route('admin.dashboard');
+            case 2:
+                return redirect()->route('parent.dashboard');
+            case 3:
+                return redirect()->route('teacher.dashboard');
+            default:
+                return redirect()->route('login')->with('error', 'Rôle non reconnu');
         }
     }
 }

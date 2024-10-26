@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('school_years', function (Blueprint $table) {
             $table->id();
             $table->string('wording');
+            $table->boolean('is_current')->default(false);
             $table->timestamps();
         });
     }
