@@ -67,7 +67,7 @@ class StudentRegistrationController extends Controller
         ]);
 
         // Lier le parent à l'étudiant
-        $parent = auth()->user();
+        $parent = auth()->user;
         $parent->children()->attach($student->id);
 
         // Envoyer un email avec le mot de passe temporaire
@@ -168,7 +168,7 @@ class StudentRegistrationController extends Controller
         $isFullPayment = $remainingAmount <= 0;
     
         // Envoyer une notification au parent pour les dit ce qu'il ont payer et leur informer de ce qui reste
-        $parent = auth()->user();
+        $parent = auth()->user;
         $parent->notify(new PaymentNotification($payment, $remainingAmount, $isFullPayment));
 
         // Envoyer une notification aux admins pour les notifier que un paiement a été effectué
