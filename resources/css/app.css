@@ -11,6 +11,9 @@
 .fd-bg{
     background-color:#3d5ee1 !important;
 }
+.fd-yl{
+    background-color: #f9d34e !important;
+}
 .login-image { background-image: url("/public/images/login-icon-02.png") ; background-repeat: no-repeat; background-position: top right;}
 .fd-bg-silver{
     background-color: #F7F7FA;

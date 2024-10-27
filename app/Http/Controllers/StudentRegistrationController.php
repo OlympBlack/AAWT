@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\StudentWelcomeMail;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Registration;
 use App\Models\Classroom;
 use App\Models\SchoolYear;
@@ -19,6 +20,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Notifications\StudentRegistered;
 use App\Notifications\PaymentReceived;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
 
 class StudentRegistrationController extends Controller
 {
@@ -86,12 +89,11 @@ class StudentRegistrationController extends Controller
     {
         $registration = Registration::with(['student', 'classroom', 'schoolYear'])->findOrFail($registrationId);
         
-        // Générer le PDF ici
-        // $pdf = PDF::loadView('pdfs.registration-form', compact('registration'));
-        // return $pdf->download('fiche_inscription.pdf');
+         
+        $imagePath = public_path('images/myschoologos.png');
+         $pdf = Pdf::loadView('parent.registration-form', compact('registration', 'imagePath'));
+        return $pdf->download( $registration->student->firstname . '_' . $registration->student->lastname . '_fiche_inscription.pdf');
 
-        // Pour l'instant, je vais retourner  simplement une vue et le faire apres
-        return view('pdfs.registration-form', compact('registration'));
     }
 
     public function showPaymentForm($registrationId)
