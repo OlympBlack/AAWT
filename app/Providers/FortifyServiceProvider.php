@@ -39,7 +39,7 @@ class FortifyServiceProvider extends ServiceProvider
 
         RateLimiter::for('login', function (Request $request) {
             $email = (string) $request->email;
-            return Limit::perMinute(5)->by($email.$request->ip());
+            return Limit::perMinute(5)->by($email . $request->ip());
         });
 
         RateLimiter::for('two-factor', function (Request $request) {
@@ -64,32 +64,14 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->instance(LoginResponse::class, new class implements LoginResponse {
             public function toResponse($request)
             {
-                return $this->redirectTo();
-            }
-
-            protected function redirectTo()
-            {
-                if (auth()->user()) {
-                    $role = auth()->user()->role_id;
-                    switch ($role) {
-                        case 1:
-                            return redirect('/admin/dashboard');
-                        case 2:
-                            return redirect('/parent/dashboard');
-                        case 3:
-                            return redirect('/teacher/dashboard');
-                        default:
-                            return redirect('/dashboard');
-                    }
-                }
-                return redirect('/login');
+                return redirect('/');
             }
         });
 
         $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
             public function toResponse($request)
             {
-                return redirect('/parent/dashboard');
+                return redirect('/');
             }
         });
     }

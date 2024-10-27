@@ -7,6 +7,7 @@ use App\Notifications\NewParentRegistration;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
 
@@ -55,6 +56,6 @@ class CreateNewUser implements CreatesNewUsers
     private function notifyAdmins(User $user): void
     {
         $admins = User::where('role_id', 1)->get(['id', 'email']);
-        \Notification::send($admins, new NewParentRegistration($user));
+        Notification::send($admins, new NewParentRegistration($user));
     }
 }

@@ -23,9 +23,9 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middlewareGroups = [
-        'web' => [
-            // ...
-            \App\Http\Middleware\EnsurePasswordChanged::class,
-        ],
+        // 'web' => [
+        //     // ...
+        //     \App\Http\Middleware\EnsurePasswordChanged::class,
+        // ],
     ];
 }
