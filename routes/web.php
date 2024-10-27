@@ -53,7 +53,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/teacher/classes', [TeacherDashboardController::class, 'classes'])->name('teacher.classes');
     Route::get('/teacher/class/{classroom}/students', [TeacherDashboardController::class, 'students'])->name('teacher.class.students');
     Route::get('/teacher/class/{classroom}/student/{student}/notes', [TeacherDashboardController::class, 'studentNotes'])->name('teacher.student.notes');
-    Route::post('/teacher/note/store', [TeacherDashboardController::class, 'storeNote'])->name('teacher.note.store');
+    Route::post('/teacher/note/store', [TeacherDashboardController::class, 'storeNote'])->name('teacher.store-note');
     Route::put('/teacher/note/{note}', [TeacherDashboardController::class, 'updateNote'])->name('teacher.update-note');
     Route::delete('/teacher/note/{note}', [TeacherDashboardController::class, 'deleteNote'])->name('teacher.delete-note');
 

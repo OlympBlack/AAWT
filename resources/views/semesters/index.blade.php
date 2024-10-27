@@ -51,7 +51,7 @@
                                         @endphp
                                         @if($isActive)
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                Actif
+                                                Courant
                                             </span>
                                         @else
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
@@ -66,6 +66,21 @@
                                         <a href="{{ route('semesters.edit', $semester->id) }}" class="text-yellow-600 hover:text-yellow-900">
                                             <span class="mdi mdi-pencil bg-yellow-100 p-1 rounded"></span>
                                         </a>
+                                        @foreach($semester->schoolYears as $schoolYear)
+                                            @if($schoolYear->is_current)
+                                                <form action="{{ route('semesters.toggle-active', $semester->id) }}" method="POST" class="inline-block">
+                                                    @csrf
+                                                    <input type="hidden" name="school_year_id" value="{{ $schoolYear->id }}">
+                                                    <button type="submit" class="{{ $isActive ? 'text-green-600 hover:text-green-900' : 'text-gray-600 hover:text-gray-900' }}">
+                                                        @if($isActive)
+                                                            <span class="mdi mdi-toggle-switch bg-green-100 p-1 rounded"></span>
+                                                        @else
+                                                            <span class="mdi mdi-toggle-switch-off bg-gray-100 p-1 rounded"></span>
+                                                        @endif
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        @endforeach
                                         <form action="{{ route('semesters.destroy', $semester->id) }}" method="POST" class="inline-block">
                                             @csrf
                                             @method('DELETE')

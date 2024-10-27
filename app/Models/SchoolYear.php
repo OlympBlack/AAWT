@@ -48,7 +48,7 @@ class SchoolYear extends Model
 
     public static function current()
     {
-        return self::where('is_current', true)->first();
+        return static::where('is_current', true)->first();
     }
 
     public static function toggleCurrent($id)

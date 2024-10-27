@@ -19,6 +19,24 @@
                         @endforeach
                     </ul>
                 </div>
+                <div class="mb-4">
+                    <strong>Statut:</strong>
+                    @php
+                        $isActive = $semester->schoolYears->where('is_current', true)->first() && 
+                                    $semester->schoolYears->where('is_current', true)->first()
+                                            ->schoolYearSemesters->where('semester_id', $semester->id)
+                                            ->first()->is_active;
+                    @endphp
+                    @if($isActive)
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Courant
+                        </span>
+                    @else
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                            Inactif
+                        </span>
+                    @endif
+                </div>
                 <div class="flex items-center justify-end mt-4">
                     <x-button>
                         <a href="{{ route('semesters.edit', $semester->id) }}" class="flex items-center">
@@ -26,6 +44,23 @@
                             {{ __('Modifier') }}
                         </a>
                     </x-button>
+                    @foreach($semester->schoolYears as $schoolYear)
+                        @if($schoolYear->is_current)
+                            <form action="{{ route('semesters.toggle-active', $semester->id) }}" method="POST" class="ml-2">
+                                @csrf
+                                <input type="hidden" name="school_year_id" value="{{ $schoolYear->id }}">
+                                <x-button type="submit" class="{{ $isActive ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-600 hover:bg-gray-700' }}">
+                                    @if($isActive)
+                                        <span class="mdi mdi-toggle-switch mr-2"></span>
+                                        {{ __('Désactiver') }}
+                                    @else
+                                        <span class="mdi mdi-toggle-switch-off mr-2"></span>
+                                        {{ __('Activer') }}
+                                    @endif
+                                </x-button>
+                            </form>
+                        @endif
+                    @endforeach
                     <form action="{{ route('semesters.destroy', $semester->id) }}" method="POST" class="ml-2">
                         @csrf
                         @method('DELETE')
@@ -39,4 +74,3 @@
         </div>
     </div>
 </x-app-layout>
-

@@ -27,7 +27,7 @@
                             <div class="mb-4 p-4 border rounded flex justify-between items-center">
                                 <div>
                                     <p><strong>Nom :</strong> {{ $child->firstname }} {{ $child->lastname }}</p>
-                                    <p><strong>Classe :</strong> {{ $registration->classroom->wording }}</p>
+                                    <p><strong>Classe :</strong> {{ $registration->classroom->wording }} {{ $registration->classroom->serie->wording }}</p>
                                     <p><strong>Année scolaire :</strong> {{ $registration->schoolYear->wording }}</p>
                                 </div>
                                 <div class="flex flex-col space-y-2">

@@ -61,44 +61,30 @@ class TeacherDashboardController extends Controller
         return view('teacher.students', compact('classroom', 'registrations', 'subjects'));
     }
 
-    public function studentNotes(User $student, Classroom $classroom)
+    public function studentNotes(Classroom $classroom, User $student)
     {
         $teacher = Auth::user();
         $currentSchoolYear = SchoolYear::current();
-        $registration = Registration::where('student_id', $student->id)
-                                    ->where('classroom_id', $classroom->id)
-                                    ->where('school_year_id', $currentSchoolYear->id)
-                                    ->first();
+        $currentSemester = SchoolYearSemester::where('school_year_id', $currentSchoolYear->id)
+                                         ->where('is_active', true)
+                                         ->first();
 
-        if (!$registration) {
-            abort(404, 'Cet étudiant n\'est pas inscrit dans cette classe pour l\'année scolaire en cours.');
+        if (!$currentSemester) {
+            return redirect()->back()->with('error', 'Aucun semestre actif pour l\'année scolaire en cours.');
         }
 
         $subjects = $teacher->teachingSubjects()
-                            ->where('classroom_id', $classroom->id)
-                            ->get();
-        
-        if ($subjects->isEmpty()) {
-            abort(403, 'Vous n\'enseignez aucune matière dans cette classe.');
-        }
-
-        $currentSemester = SchoolYearSemester::where('school_year_id', $currentSchoolYear->id)
-                            ->where('is_active', true)
-                            ->first();
-        
-        if (!$currentSemester) {
-            abort(404, 'Aucun semestre actif n\'a été trouvé pour l\'année scolaire en cours.');
-        }
+                        ->where('subject_teacher.classroom_id', $classroom->id)
+                        ->get();
 
         $noteTypes = NoteType::all();
-        
-        // Récupérer toutes les notes de l'étudiant pour les matières enseignées par ce professeur
+
         $notes = Note::where('student_id', $student->id)
-                     ->whereIn('subject_id', $subjects->pluck('id'))
-                     ->where('school_year_semester_id', $currentSemester->id)
-                     ->get()
-                     ->groupBy(['subject_id', 'note_type_id']);
-        
+                 ->whereIn('subject_id', $subjects->pluck('id'))
+                 ->where('school_year_semester_id', $currentSemester->id)
+                 ->get()
+                 ->groupBy(['subject_id', 'note_type_id']);
+
         return view('teacher.student_notes', compact('student', 'subjects', 'currentSemester', 'noteTypes', 'classroom', 'notes'));
     }
 
@@ -113,19 +99,8 @@ class TeacherDashboardController extends Controller
         ]);
 
         $teacher = Auth::user();
-        $subject = Subject::findOrFail($request->subject_id);
-
-        if (!$teacher->teachingSubjects()->where('subjects.id', $subject->id)->exists()) {
-            abort(403, 'Vous n\'êtes pas autorisé à ajouter des notes pour cette matière.');
-        }
-
-        $currentSchoolYear = SchoolYear::current();
-        $currentSemester = SchoolYearSemester::where('school_year_id', $currentSchoolYear->id)
-                            ->where('is_active', true)
-                            ->first();
-
-        if ($request->school_year_semester_id != $currentSemester->id) {
-            abort(403, 'Vous ne pouvez ajouter des notes que pour le semestre actif.');
+        if (!$teacher->teachingSubjects()->where('subjects.id', $request->subject_id)->exists()) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à ajouter des notes pour cette matière.');
         }
 
         Note::updateOrCreate(
@@ -149,7 +124,7 @@ class TeacherDashboardController extends Controller
 
         $teacher = Auth::user();
         if (!$teacher->teachingSubjects()->where('subjects.id', $note->subject_id)->exists()) {
-            abort(403, 'Vous n\'êtes pas autorisé à modifier cette note.');
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à modifier cette note.');
         }
 
         $note->update(['value' => $request->value]);
@@ -161,7 +136,7 @@ class TeacherDashboardController extends Controller
     {
         $teacher = Auth::user();
         if (!$teacher->teachingSubjects()->where('subjects.id', $note->subject_id)->exists()) {
-            abort(403, 'Vous n\'êtes pas autorisé à supprimer cette note.');
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à supprimer cette note.');
         }
 
         $note->delete();

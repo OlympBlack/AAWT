@@ -57,7 +57,7 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->instance(LogoutResponse::class, new class implements LogoutResponse {
             public function toResponse($request)
             {
-                return redirect('/login')->with('status', 'Vous avez été déconnecté avec succès.');
+                return redirect('/login')->with('success', 'Vous avez été déconnecté avec succès.');
             }
         });
 

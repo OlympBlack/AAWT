@@ -6,6 +6,7 @@ use App\Models\Semester;
 use App\Models\SchoolYear;
 use App\Models\SchoolYearSemester;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SemesterController extends Controller
 {
@@ -114,15 +115,39 @@ class SemesterController extends Controller
         $request->validate([
             'school_year_id' => 'required|exists:school_years,id',
         ]);
-
+    
         $schoolYear = SchoolYear::findOrFail($request->school_year_id);
         
         if (!$schoolYear->is_current) {
-            return redirect()->back()->with('error', 'Vous ne pouvez activer un semestre que pour l\'année scolaire courante.');
+            return redirect()->back()->with('error', 'Vous ne pouvez modifier le statut d\'un semestre que pour l\'année scolaire courante.');
         }
-
-        SchoolYearSemester::setActive($request->school_year_id, $id);
-
-        return redirect()->back()->with('success', 'Semestre activé avec succès pour l\'année scolaire courante.');
+    
+        $semester = Semester::findOrFail($id);
+        $schoolYearSemester = SchoolYearSemester::where('school_year_id', $schoolYear->id)
+                                                ->where('semester_id', $semester->id)
+                                                ->first();
+    
+        if (!$schoolYearSemester) {
+            return redirect()->back()->with('error', 'Ce semestre n\'est pas associé à l\'année scolaire courante.');
+        }
+    
+        DB::transaction(function () use ($schoolYear, $schoolYearSemester) {
+            $newStatus = !$schoolYearSemester->is_active;
+            
+            // Si on active le semestre, désactiver tous les autres
+            if ($newStatus) {
+                SchoolYearSemester::where('school_year_id', $schoolYear->id)
+                                   ->where('id', '!=', $schoolYearSemester->id)
+                                   ->update(['is_active' => false]);
+            }
+            
+            $schoolYearSemester->update(['is_active' => $newStatus]);
+        });
+    
+        $message = $schoolYearSemester->is_active 
+            ? "Le semestre {$semester->wording} a été activé pour l'année scolaire courante." 
+            : "Le semestre {$semester->wording} a été désactivé pour l'année scolaire courante.";
+    
+        return redirect()->back()->with('success', $message);
     }
 }
