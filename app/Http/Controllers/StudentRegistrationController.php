@@ -19,9 +19,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Notifications\StudentRegistered;
-use App\Notifications\PaymentReceived;
-use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
-use Barryvdh\DomPDF\PDF as DomPDFPDF;
 
 class StudentRegistrationController extends Controller
 {
@@ -55,9 +52,16 @@ class StudentRegistrationController extends Controller
             'password_change_required' => true,
         ]);
 
+        if (!$student) {
+            return redirect()->back()->with('error', 'Échec de la création de l\'étudiant. Veuillez vérifier les données saisies.');
+        }
+
         $avatarPath = $request->file('student_avatar')->store('avatars', 'public');
 
         $currentSchoolYear = SchoolYear::current();
+        if (!$currentSchoolYear) {
+            return redirect()->back()->with('error', 'Aucune année scolaire en cours trouvée.');
+        }
 
         $registration = Registration::create([
             'student_id' => $student->id,
@@ -88,12 +92,9 @@ class StudentRegistrationController extends Controller
     public function generateRegistrationForm($registrationId)
     {
         $registration = Registration::with(['student', 'classroom', 'schoolYear'])->findOrFail($registrationId);
-        
-         
         $imagePath = public_path('images/myschoologos.png');
-         $pdf = Pdf::loadView('parent.registration-form', compact('registration', 'imagePath'));
-        return $pdf->download( $registration->student->firstname . '_' . $registration->student->lastname . '_fiche_inscription.pdf');
-
+        $pdf = Pdf::loadView('parent.registration-form', compact('registration', 'imagePath'));
+        return $pdf->download($registration->student->firstname . '_' . $registration->student->lastname . '_fiche_inscription.pdf');
     }
 
     public function showPaymentForm($registrationId)
@@ -166,16 +167,16 @@ class StudentRegistrationController extends Controller
         $totalPaid = $registration->payments->sum('amount') + $amountToPay;
         $remainingAmount = $registration->classroom->costs - $totalPaid;
         $isFullPayment = $remainingAmount <= 0;
-    
-        // Envoyer une notification au parent pour les dit ce qu'il ont payer et leur informer de ce qui reste
+
+        // Envoyer une notification au parent pour les informer de leur paiement
         $parent = auth()->user();
         $parent->notify(new PaymentNotification($payment, $remainingAmount, $isFullPayment));
 
-        // Envoyer une notification aux admins pour les notifier que un paiement a été effectué
+        // Envoyer une notification aux admins pour les informer qu'un paiement a été effectué
         $admins = User::whereHas('role', function ($query) {
             $query->where('wording', 'admin');
         })->get();
-    
+
         \Illuminate\Support\Facades\Notification::send($admins, new AdminPaymentNotification($payment, $remainingAmount));
 
         return redirect()->route('parent.dashboard')->with('success', 'Paiement effectué avec succès.');
