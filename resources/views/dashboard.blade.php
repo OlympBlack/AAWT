@@ -124,8 +124,8 @@
                     </div>
 
                     <!-- Social Media Cards -->
-                    <div class="flex flex-col gap-4">
-                        <div class="flex flex-col gap-4">
+                    <div class="flex flex-col gap-4 ">
+                        <div class="flex flex-col gap-4 ml-5">
                             <h5 class="text-lg text-gray-500 mb-3">Les réseaux sociaux</h5>
         
                             <!-- Facebook -->

@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="/">
                         <x-application-mark class="block h-9 w-auto" />
                     </a>
                 </div>
@@ -166,7 +166,7 @@
             <!-- Hamburger -->
             <div class="-mr-2 flex items-center sm:hidden">
                 <!-- Notifications pour mobile -->
-                <div class="mr-2 relative">
+                <div class="mr-2 relative ">
                     <button @click="notificationsOpen = !notificationsOpen" class="flex items-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                         <i class="mdi mdi-bell text-xl"></i>
                         @if(auth()->user()->unreadNotifications->isNotEmpty())
@@ -175,7 +175,7 @@
                     </button>
                     
                     <!-- Liste des notifications pour mobile -->
-                    <div x-show="notificationsOpen" 
+                    <div x-show="notificationsOpen"
                          @click.away="notificationsOpen = false" 
                          x-transition:enter="transition ease-out duration-200"
                          x-transition:enter-start="transform opacity-0 scale-95"

@@ -34,7 +34,7 @@ Route::get('/', function (Request $request) {
 // Routes communes à tous les utilisateurs authentifiés
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::patch('/notifications/{id}/mark-as-read', function ($id) {
-        auth()->user->notifications()->findOrFail($id)->markAsRead();
+        auth()->user()->notifications()->findOrFail($id)->markAsRead();
         return back();
     })->name('notifications.markAsRead');
 

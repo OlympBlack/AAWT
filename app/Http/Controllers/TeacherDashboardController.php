@@ -66,11 +66,10 @@ class TeacherDashboardController extends Controller
         $teacher = Auth::user();
         $currentSchoolYear = SchoolYear::current();
         $currentSemester = SchoolYearSemester::where('school_year_id', $currentSchoolYear->id)
-                                         ->where('is_active', true)
-                                         ->first();
+                                         ->first(); // Retiré where('is_active', true) pour voir tous les semestres
 
         if (!$currentSemester) {
-            return redirect()->back()->with('error', 'Aucun semestre actif pour l\'année scolaire en cours.');
+            return redirect()->back()->with('error', 'Aucun semestre trouvé pour l\'année scolaire en cours.');
         }
 
         $subjects = $teacher->teachingSubjects()
@@ -79,9 +78,11 @@ class TeacherDashboardController extends Controller
 
         $noteTypes = NoteType::all();
 
+        // Récupérer toutes les notes et les trier par date d'ajout
         $notes = Note::where('student_id', $student->id)
                  ->whereIn('subject_id', $subjects->pluck('id'))
                  ->where('school_year_semester_id', $currentSemester->id)
+                 ->orderBy('created_at', 'asc')
                  ->get()
                  ->groupBy(['subject_id', 'note_type_id']);
 
@@ -103,17 +104,41 @@ class TeacherDashboardController extends Controller
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à ajouter des notes pour cette matière.');
         }
 
-        Note::updateOrCreate(
-            [
-                'student_id' => $request->student_id,
-                'subject_id' => $request->subject_id,
-                'note_type_id' => $request->note_type_id,
-                'school_year_semester_id' => $request->school_year_semester_id,
-            ],
-            ['value' => $request->value]
-        );
+        $semester = SchoolYearSemester::find($request->school_year_semester_id);
+        if (!$semester->is_active) {
+            return redirect()->back()->with('error', 'Impossible d\'ajouter une note pour un semestre inactif.');
+        }
 
-        return redirect()->back()->with('success', 'Note enregistrée avec succès.');
+        // Vérifier le nombre exact de notes
+        $existingNotes = Note::where([
+            'student_id' => $request->student_id,
+            'subject_id' => $request->subject_id,
+            'note_type_id' => $request->note_type_id,
+            'school_year_semester_id' => $request->school_year_semester_id,
+        ])->count();
+
+        $noteType = NoteType::find($request->note_type_id);
+        $requiredNotes = $noteType->wording === 'Interrogation' ? 3 : 2;
+
+        if ($existingNotes >= $requiredNotes) {
+            return redirect()->back()->with('error', "Le nombre maximum de notes pour ce type d'évaluation est déjà atteint ({$requiredNotes} notes).");
+        }
+
+        Note::create([
+            'student_id' => $request->student_id,
+            'subject_id' => $request->subject_id,
+            'note_type_id' => $request->note_type_id,
+            'school_year_semester_id' => $request->school_year_semester_id,
+            'value' => $request->value
+        ]);
+
+        if ($existingNotes + 1 === $requiredNotes) {
+            $message = "Note ajoutée avec succès. Vous avez atteint le nombre maximum de notes pour ce type d'évaluation.";
+        } else {
+            $message = "Note ajoutée avec succès. Il vous reste " . ($requiredNotes - ($existingNotes + 1)) . " note(s) à ajouter.";
+        }
+
+        return redirect()->back()->with('success', $message);
     }
 
     public function updateNote(Request $request, Note $note)
