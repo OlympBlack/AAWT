@@ -48,9 +48,10 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="mb-4">
+                            <div class="mb-4">
                             <label for="payment_mode_id" class="block text-sm font-medium text-gray-700">Moyen de paiement</label>
                             <select name="payment_mode_id" id="payment_mode_id" class="mt-1 block w-full" required>
+                            
                                 @foreach($paymentModes as $mode)
                                     <option value="{{ $mode->id }}">{{ $mode->wording }}</option>
                                 @endforeach
