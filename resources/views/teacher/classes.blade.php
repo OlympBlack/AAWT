@@ -8,14 +8,16 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-                @foreach($classrooms as $classroom)
+                @forelse($classrooms as $classroom)
                     <div class="mb-4 p-4 border rounded">
                         <h3 class="text-lg font-semibold">{{ $classroom->wording }} {{ $classroom->serie->wording }}</h3>
                         <a href="{{ route('teacher.class.students', $classroom) }}" class="mt-2 inline-block bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded">
                             Voir les étudiants
                         </a>
                     </div>
-                @endforeach
+                @empty
+                    <p class="text-center text-blue-500">Cher enseignant, aucune classe ne vous est assignée pour le moment merci</p>
+                @endforelse
             </div>
         </div>
     </div>

@@ -3,10 +3,8 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use App\Models\User;
 
 class StudentWelcomeMail extends Mailable
 {
@@ -14,22 +12,21 @@ class StudentWelcomeMail extends Mailable
 
     public $student;
     public $temporaryPassword;
+    private $pdf;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct(User $student, $temporaryPassword)
+    public function __construct($student, $temporaryPassword, $pdf)
     {
         $this->student = $student;
         $this->temporaryPassword = $temporaryPassword;
+        $this->pdf = $pdf;
     }
 
-    /**
-     * Build the message.
-     */
     public function build()
     {
-        return $this->markdown('emails.student-welcome')
-                    ->subject('Bienvenue sur notre plateforme scolaire');
+        return $this->subject('Bienvenue à MySchool - Votre carte d\'identité scolaire')
+            ->markdown('emails.student-welcome-with-card')
+            ->attachData($this->pdf->output(), 'carte_scolaire.pdf', [
+                'mime' => 'application/pdf'
+            ]);
     }
 }

@@ -83,11 +83,12 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/parent/registration-form/{registrationId}', [StudentRegistrationController::class, 'generateRegistrationForm'])->name('parent.registration-form');
         Route::get('/parent/payment/{registrationId}', [StudentRegistrationController::class, 'showPaymentForm'])->name('parent.payment-form');
         Route::post('/parent/payment/{registrationId}', [StudentRegistrationController::class, 'processPayment'])->name('parent.process-payment');
-        Route::get('/student/verify/{id}', [StudentController::class, 'verify'])
-        ->name('student.verify');
+       
     Route::get('/parent/student-card/{registration}', [StudentRegistrationController::class, 'generateStudentCard'])
         ->name('parent.student-card');
     });
 
     Route::get('/registration-form/{registrationId}', [StudentRegistrationController::class, 'generateRegistrationForm'])->name('registration.form.download');
 });
+Route::get('/student/verify/{id}', [StudentController::class, 'verify'])
+->name('student.verify');

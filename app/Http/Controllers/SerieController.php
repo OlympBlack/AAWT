@@ -50,8 +50,9 @@ class SerieController extends Controller
         return view('series.edit', compact('serie'));
     }
 
-    public function update(Request $request, Serie $serie)
+    public function update(Request $request, $id)
     {
+        $serie = Serie::findOrFail($id);
         $request->validate([
             'wording' => 'required|string|max:255',
         ]);

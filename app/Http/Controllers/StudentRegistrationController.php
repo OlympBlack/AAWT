@@ -36,6 +36,14 @@ class StudentRegistrationController extends Controller
 
     public function register(Request $request)
     {
+        $currentSchoolYear = SchoolYear::current();
+    
+        if (!$currentSchoolYear) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Impossible de procéder à l\'inscription : aucune année scolaire n\'est définie comme courante. Veuillez contacter l\'administration.');
+        }
         $request->validate([
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
@@ -58,8 +66,7 @@ class StudentRegistrationController extends Controller
         ]);
 
         $avatarPath = $request->file('student_avatar')->store('avatars', 'public');
-
-        $currentSchoolYear = SchoolYear::current();
+        
 
         $registration = Registration::create([
             'student_id' => $student->id,
@@ -84,17 +91,8 @@ class StudentRegistrationController extends Controller
         $pdf->setPaper('A-7', 'landscape');
 
        
-        Mail::send(
-            'emails.student-welcome-with-card',
-            ['student' => $student, 'temporaryPassword' => $temporaryPassword],
-            function ($message) use ($student, $pdf) {
-                $message->to($student->email)
-                    ->subject('Bienvenue à MySchool - Votre carte d\'identité scolaire')
-                    ->attachData($pdf->output(), 'carte_scolaire.pdf', [
-                        'mime' => 'application/pdf'
-                    ]);
-            }
-        );
+        Mail::to($student->email)
+    ->send(new StudentWelcomeMail($student, $temporaryPassword, $pdf));
 
 
 
