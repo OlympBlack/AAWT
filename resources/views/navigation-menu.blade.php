@@ -34,9 +34,9 @@
                         <x-nav-link href="{{ route('admin.payment-settings') }}" :active="request()->routeIs('admin.payment-settings')">
                             {{ __('Paramètres de paiement') }}
                         </x-nav-link>
-                        <x-nav-link href="{{ route('note-types.index') }}" :active="request()->routeIs('note-types.*')">
+                        {{-- <x-nav-link href="{{ route('note-types.index') }}" :active="request()->routeIs('note-types.*')">
                             {{ __('Types de notes') }}
-                        </x-nav-link>
+                        </x-nav-link> --}}
                     @elseif(auth()->user()->role->wording === 'teacher')
                         <x-nav-link href="{{ route('teacher.dashboard') }}" :active="request()->routeIs('teacher.dashboard')">
                             {{ __('Dashboard') }}
@@ -231,9 +231,9 @@
                 <x-responsive-nav-link href="{{ route('admin.payment-settings') }}" :active="request()->routeIs('admin.payment-settings')">
                     {{ __('Paramètres de paiement') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('note-types.index') }}" :active="request()->routeIs('note-types.*')">
+                {{-- <x-responsive-nav-link href="{{ route('note-types.index') }}" :active="request()->routeIs('note-types.*')">
                     {{ __('Types de notes') }}
-                </x-responsive-nav-link>
+                </x-responsive-nav-link> --}}
             @elseif(auth()->user()->role->wording === 'teacher')
                 <x-responsive-nav-link href="{{ route('teacher.dashboard') }}" :active="request()->routeIs('teacher.dashboard')">
                     {{ __('Dashboard') }}

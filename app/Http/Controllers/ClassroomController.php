@@ -78,10 +78,25 @@ class ClassroomController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Classroom $classroom)
-    {
-        $classroom->delete();
+    public function destroy($id)
+{
+    $classroom = Classroom::findOrFail($id);
 
-        return redirect()->route('classrooms.index')->with('success', 'Salle de classe supprimée avec succès.');
+    try {
+
+        if ($classroom->registrations()->exists()) {
+            return back()->with('error', 'Impossible de supprimer cette classe car elle contient des étudiants.');
+        }
+
+        if ($classroom->subjects()->exists()) {
+            return back()
+                ->with('error', 'Impossible de supprimer cette classe car elle est associée à des matières.');
+        }
+
+        $classroom->delete();
+        return back()->with('success', 'Classe supprimée avec succès.');
+    } catch (\Exception $e) {
+        return back()->with('error', 'Une erreur est survenue lors de la suppression.');
+        }
     }
 }

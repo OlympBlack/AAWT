@@ -131,7 +131,7 @@ class StudentRegistrationController extends Controller
         $registration = Registration::with('student', 'classroom', 'payments')->findOrFail($registrationId);
 
         $request->validate([
-            'payment_mode' => 'required|in:total,tranche',
+            // 'payment_mode' => 'required|in:1,2',
             'payment_type_id' => 'required|exists:payment_types,id',
             'payment_mode_id' => 'required|exists:payment_modes,id',
         ]);
