@@ -8,7 +8,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-                <h3 class="text-lg font-semibold mb-4">Modes de paiement</h3>
+                <h3 class="text-lg font-semibold mb-4">Moyen de paiement</h3>
                 @if ($errors->any())
                 <div class="mb-4">
                     <div class="font-medium text-red-600">
@@ -25,7 +25,7 @@
                 <form method="POST" action="{{ route('admin.payment-modes.store') }}" class="mb-4">
                     @csrf
                     <div class="flex items-center">
-                        <input type="text" name="wording" placeholder="Nouveau mode de paiement" class="form-input rounded-md shadow-sm mt-1 block w-full" required>
+                        <input type="text" name="wording" placeholder="Nouveau moyen de paiement" class="form-input rounded-md shadow-sm mt-1 block w-full" required>
                         <button type="submit" class="ml-4 inline-flex items-center px-4 py-2 fd-bg border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-100 active:bg-blue-100 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition">Ajouter</button>
                     </div>
                 </form>
@@ -41,7 +41,7 @@
                         </li>
                     @endforeach
                 </ul>
-
+                {{--
                 <h3 class="text-lg font-semibold mb-4 mt-8">Types de paiement</h3>
                 <form method="POST" action="{{ route('admin.payment-types.store') }}" class="mb-4">
                     @csrf
@@ -54,7 +54,7 @@
                         <button type="submit" class="ml-4 inline-flex items-center px-4 py-2 fd-bg border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition">Ajouter</button>
                     </div>
                 </form>
-                <ul>
+                 <ul>
                     @foreach($paymentTypes as $type)
                         <li class="flex justify-between items-center mb-2">
                             {{ $type->wording }}
@@ -65,7 +65,7 @@
                             </form>
                         </li>
                     @endforeach
-                </ul>
+                </ul> --}}
             </div>
         </div>
     </div>

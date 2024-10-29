@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Serie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SerieController extends Controller
 {
@@ -63,10 +64,17 @@ class SerieController extends Controller
 
     public function destroy($id)
     {
-        $serie = Serie::find($id);
-        $serie->delete();
-
-        return redirect()->route('series.index')
-            ->with('success', 'Série supprimée avec succès.');
+        $serie = Serie::findOrFail($id);
+        try {
+            // Vérifier si la série peut être supprimée
+            if ($serie->classrooms()->exists()) {
+                return back()->with('error', 'Cette série ne peut pas être supprimée car elle est utilisée par des classes.');
+            }
+    
+            $serie->delete();
+            return back()->with('success', 'Série supprimée avec succès.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Erreur lors de la suppression de la série.');
+        }
     }
 }

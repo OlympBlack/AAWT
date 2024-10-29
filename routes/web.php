@@ -47,14 +47,14 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::resource('semesters', SemesterController::class);
         Route::post('/semesters/{id}/toggle-active', [SemesterController::class, 'toggleActive'])->name('semesters.toggle-active');
         Route::resource('school-years', SchoolyearController::class);
-        Route::resource('note-types', AdminNoteTypeController::class);
+        // Route::resource('note-types', AdminNoteTypeController::class);
         
         // Paramètres de paiement
         Route::get('/admin/payment-settings', [AdminPaymentSettingsController::class, 'index'])->name('admin.payment-settings');
         Route::post('/admin/payment-modes', [AdminPaymentSettingsController::class, 'storePaymentMode'])->name('admin.payment-modes.store');
-        Route::post('/admin/payment-types', [AdminPaymentSettingsController::class, 'storePaymentType'])->name('admin.payment-types.store');
+        // Route::post('/admin/payment-types', [AdminPaymentSettingsController::class, 'storePaymentType'])->name('admin.payment-types.store');
         Route::delete('/admin/payment-modes/{paymentMode}', [AdminPaymentSettingsController::class, 'destroyPaymentMode'])->name('admin.payment-modes.destroy');
-        Route::delete('/admin/payment-types/{paymentType}', [AdminPaymentSettingsController::class, 'destroyPaymentType'])->name('admin.payment-types.destroy');
+        // Route::delete('/admin/payment-types/{paymentType}', [AdminPaymentSettingsController::class, 'destroyPaymentType'])->name('admin.payment-types.destroy');
         
         // Gestion des utilisateurs
         Route::get('/admin/create', [AdminManagementController::class, 'create'])->name('admin.create');

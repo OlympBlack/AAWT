@@ -1,4 +1,4 @@
-<x-app-layout>
+{{-- <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ isset($noteType) ? __('Modifier le type de note') : __('Créer un type de note') }}
@@ -20,7 +20,7 @@
                         @endforeach
                     </ul>
                 </div>
-            @endif
+                @endif
                 <form action="{{ isset($noteType) ? route('note-types.update', $noteType) : route('note-types.store') }}" method="POST">
                     @csrf
                     @if(isset($noteType))
@@ -39,5 +39,5 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-app-layout> --}}
 

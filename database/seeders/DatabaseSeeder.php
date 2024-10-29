@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Role;
 use App\Models\Serie;
 use App\Models\Classroom;
+use App\Models\NoteType;
 use App\Models\Subject;
 use App\Models\Schoolyear;
 use App\Models\Registration;
@@ -56,6 +57,13 @@ class DatabaseSeeder extends Seeder
         PaymentType::create([
             'wording' => 'Paiement par tranche',
             'is_partial' => true,
+        ]);
+        NoteType::create([
+            'wording' => 'Interrogation',
+        ]);
+
+        NoteType::create([
+            'wording' => 'Devoir',
         ]);
     }
 }

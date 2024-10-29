@@ -47,8 +47,8 @@
     background-color: #3d5ee1;
 }
 .notification-dot {
-    width: 8px;
-    height: 8px;
+    width: 8px !important;
+    height: 8px !important;
     background-color: red;
     border-radius: 50%;
     position: absolute;
@@ -60,6 +60,11 @@
 @media (max-width: 640px) {
     .absolute.right-0 {
         right: auto;
-        left: 0;
+        left: 25%;
+        top: 35%;
+        border-radius: 50%;
+        width: 2px !important;
+        height: 14px !important;
+    
     }
 }

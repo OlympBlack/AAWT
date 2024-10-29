@@ -94,18 +94,34 @@ class SchoolYearController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy( $id)
+    public function destroy($id)
     {
-        $schoolYear = SchoolYear::find($id);
-        if (!$schoolYear) {
-            return redirect()->route('school-years.index')->with('error', 'Année scolaire non trouvée.');
+        try {
+            $schoolYear = SchoolYear::findOrFail($id);
+            
+            if ($schoolYear->semesters()->count() > 0) {
+                return redirect()->route('school-years.index')
+                    ->with('error', 'Impossible de supprimer cette année scolaire car elle est associée à des semestres.');
+            }
+            
+            if ($schoolYear->classrooms()->count() > 0) {
+                return redirect()->route('school-years.index')
+                    ->with('error', 'Impossible de supprimer cette année scolaire car elle est associée à des classes.');
+            }
+    
+            if ($schoolYear->students()->count() > 0) {
+                return redirect()->route('school-years.index')
+                    ->with('error', 'Impossible de supprimer cette année scolaire car elle est associée à des étudiants.');
+            }
+    
+            $schoolYear->delete();
+            return redirect()->route('school-years.index')
+                ->with('success', 'Année scolaire supprimée avec succès.');
+        } catch (\Exception $e) {
+            return redirect()->route('school-years.index')
+                ->with('error', 'Une erreur est survenue lors de la suppression.');
         }
-        $schoolYear->delete();
-
-        return redirect()->route('school-years.index')
-            ->with('success', 'Année scolaire supprimée avec succès.');
     }
-
     public function toggleCurrent($id)
     {
         SchoolYear::toggleCurrent($id);
