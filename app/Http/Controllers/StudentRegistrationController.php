@@ -22,6 +22,8 @@ use App\Notifications\StudentRegistered;
 use App\Notifications\PaymentReceived;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Barryvdh\DomPDF\PDF as DomPDFPDF;
+use Illuminate\Support\Facades\Storage;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class StudentRegistrationController extends Controller
 {
@@ -70,8 +72,31 @@ class StudentRegistrationController extends Controller
         $parent = auth()->user();
         $parent->children()->attach($student->id);
 
-        // Envoyer un email avec le mot de passe temporaire
-        Mail::to($student->email)->send(new StudentWelcomeMail($student, $temporaryPassword));
+        // Dans la méthode register, après la création de l'inscription
+        $qrCode = base64_encode(QrCode::format('png')
+            ->size(100)
+            ->generate(route('student.verify', $student->id)));
+
+        $schoolLogo = public_path('images/myschoologos.png');
+        $studentPhoto = Storage::disk('public')->path($avatarPath);
+
+        $pdf = PDF::loadView('parent.student-card', compact('registration', 'schoolLogo', 'studentPhoto', 'qrCode'));
+        $pdf->setPaper('A-7', 'landscape');
+
+       
+        Mail::send(
+            'emails.student-welcome-with-card',
+            ['student' => $student, 'temporaryPassword' => $temporaryPassword],
+            function ($message) use ($student, $pdf) {
+                $message->to($student->email)
+                    ->subject('Bienvenue à MySchool - Votre carte d\'identité scolaire')
+                    ->attachData($pdf->output(), 'carte_scolaire.pdf', [
+                        'mime' => 'application/pdf'
+                    ]);
+            }
+        );
+
+
 
         // Notifier le parent
         $parent->notify(new StudentRegistered($student));
@@ -88,18 +113,35 @@ class StudentRegistrationController extends Controller
     public function generateRegistrationForm($registrationId)
     {
         $registration = Registration::with(['student', 'classroom', 'schoolYear'])->findOrFail($registrationId);
-        
-         
+
+
         $imagePath = public_path('images/myschoologos.png');
-         $pdf = Pdf::loadView('parent.registration-form', compact('registration', 'imagePath'));
-        return $pdf->download( $registration->student->firstname . '_' . $registration->student->lastname . '_fiche_inscription.pdf');
-
+        $pdf = Pdf::loadView('parent.registration-form', compact('registration', 'imagePath'));
+        return $pdf->download($registration->student->firstname . '_' . $registration->student->lastname . '_fiche_inscription.pdf');
     }
+    public function generateStudentCard($registrationId)
+    {
+        $registration = Registration::with(['student', 'classroom', 'schoolYear'])->findOrFail($registrationId);
 
+        // Générer le QR Code avec les informations de l'étudiant
+        $qrCode = base64_encode(QrCode::format('png')
+            ->size(100)
+            ->generate(route('student.verify', $registration->student->id)));
+
+        // Chemins des images
+        $schoolLogo = public_path('images/myschoologos.png');
+        $studentPhoto = Storage::disk('public')->path($registration->student_avatar);
+
+        $pdf = PDF::loadView('parent.student-card', compact('registration', 'schoolLogo', 'studentPhoto', 'qrCode'));
+        $pdf->setPaper('A-7', 'landscape');
+        // Format carte bancaire
+
+        return $pdf->download($registration->student->firstname . '_' . $registration->student->lastname . '_carte_scolaire.pdf');
+    }
     public function showPaymentForm($registrationId)
     {
         $registration = Registration::with(['student', 'classroom', 'payments'])->findOrFail($registrationId);
-        
+
         // Vérifiez si l'étudiant existe
         if (!$registration->student) {
             return redirect()->back()->with('error', 'Étudiant non trouvé pour cette inscription.');
@@ -131,7 +173,7 @@ class StudentRegistrationController extends Controller
         $registration = Registration::with('student', 'classroom', 'payments')->findOrFail($registrationId);
 
         $request->validate([
-            // 'payment_mode' => 'required|in:1,2',
+
             'payment_type_id' => 'required|exists:payment_types,id',
             'payment_mode_id' => 'required|exists:payment_modes,id',
         ]);
@@ -166,7 +208,7 @@ class StudentRegistrationController extends Controller
         $totalPaid = $registration->payments->sum('amount') + $amountToPay;
         $remainingAmount = $registration->classroom->costs - $totalPaid;
         $isFullPayment = $remainingAmount <= 0;
-    
+
         // Envoyer une notification au parent pour les dit ce qu'il ont payer et leur informer de ce qui reste
         $parent = auth()->user();
         $parent->notify(new PaymentNotification($payment, $remainingAmount, $isFullPayment));
@@ -175,7 +217,7 @@ class StudentRegistrationController extends Controller
         $admins = User::whereHas('role', function ($query) {
             $query->where('wording', 'admin');
         })->get();
-    
+
         \Illuminate\Support\Facades\Notification::send($admins, new AdminPaymentNotification($payment, $remainingAmount));
 
         return redirect()->route('parent.dashboard')->with('success', 'Paiement effectué avec succès.');

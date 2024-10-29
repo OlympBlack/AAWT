@@ -44,12 +44,12 @@
             height: 32mm;
             position: absolute;
             right: 15px;
-            top: 25px;
+            top: 75px;
             border: 2px solid #2c5282;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .info {
-            margin-left: 10px;
+            margin-left: 80px;
             margin-top: 25px;
             font-size: 11px;
             width: 60%;
@@ -68,12 +68,12 @@
             position: absolute;
             bottom: 10px;
             left: 10px;
-            width: 20mm;
-            height: 20mm;
+            width: 15mm;
+            height: 15mm;
         }
         .academic-year {
             position: absolute;
-            bottom: 10px;
+            bottom: 12px;
             right: 15px;
             font-size: 10px;
             color: #4a5568;
