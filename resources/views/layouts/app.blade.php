@@ -17,7 +17,9 @@
 
     <!-- Animate.css -->
     <link rel="stylesheet" href="{{ asset('cdn/animate/animate.css') }}">
-
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -31,7 +33,6 @@
 
     <div class="min-h-screen bg-gray-100">
         @livewire('navigation-menu')
-
         <!-- Page Heading -->
         @if (isset($header))
             <header class="bg-white shadow">
@@ -51,7 +52,9 @@
 
     @livewireScripts
 
-    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{asset('js/delete-confirmation.js')}} "></script> 
     <!-- Chart.js -->
     <script src="{{ asset('cdn/chartjs/chartjs.min.js') }}"></script>
     @if (session('success') || session('error') || session('info') || session('warning'))

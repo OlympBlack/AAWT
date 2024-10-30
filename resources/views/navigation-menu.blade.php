@@ -154,7 +154,7 @@
                                 @csrf
 
                                 <x-dropdown-link href="{{ route('logout') }}"
-                                         @click.prevent="$root.submit();">
+                                         @click.prevent="confirmLogout($root)">
                                     {{ __('Déconnexion') }}
                                 </x-dropdown-link>
                             </form>
@@ -276,7 +276,7 @@
                     @csrf
 
                     <x-responsive-nav-link href="{{ route('logout') }}"
-                                   @click.prevent="$root.submit();">
+                                   @click.prevent="confirmLogout($root)">
                         {{ __('Déconnexion') }}
                     </x-responsive-nav-link>
                 </form>
