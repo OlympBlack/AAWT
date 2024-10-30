@@ -22,6 +22,7 @@ Route::get('/', function (Request $request) {
         'admin' => 'dashboard',
         'parent' => 'parent.dashboard',
         'teacher' => 'teacher.dashboard',
+        'student' => 'student.dashboard',
     ];
     if ($user = $request->user()) {
         if (isset($rolesMapping[$user->role->wording])) {
@@ -38,7 +39,12 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         auth()->user()->notifications()->findOrFail($id)->markAsRead();
         return back();
     })->name('notifications.markAsRead');
-
+    // Routes Etudiant
+    Route::middleware('role:student')->group(function () {
+        Route::get('/student/dashboard', function () {
+            return view('student.dashboard');
+        })->name('student.dashboard');
+    });
     // Routes Admin
     Route::middleware('role:admin')->group(function () {
         Route::get('/admin/dashboard', function () { return view('dashboard'); })->name('dashboard');
