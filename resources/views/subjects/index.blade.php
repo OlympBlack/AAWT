@@ -50,10 +50,10 @@
                                         <a href="{{ route('subjects.edit', $subject->id) }}" class="text-yellow-600 hover:text-yellow-900">
                                             <span class="mdi mdi-pencil bg-yellow-100 p-1 rounded"></span>
                                         </a>
-                                        <form action="{{ route('subjects.destroy', $subject->id) }}" method="POST" class="inline-block">
+                                        <form  id="delete-form-{{ $subject->id }}" action="{{ route('subjects.destroy', $subject->id) }}" method="POST" class="inline-block">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette matière ?')">
+                                            <button type="button" class="text-red-600 hover:text-red-900" onclick="confirmDelete('{{ $subject->id }}')">
                                                 <span class="mdi mdi-delete bg-red-100 p-1 rounded"></span>
                                             </button>
                                         </form>
@@ -66,4 +66,9 @@
             </div>
         </div>
     </div>
+
+     <!-- Inclure SweetAlert2 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{asset('js/delete-confirmation.js')}} "></script>  
 </x-app-layout>
