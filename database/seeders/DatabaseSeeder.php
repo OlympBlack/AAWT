@@ -27,26 +27,25 @@ class DatabaseSeeder extends Seeder
         Role::create(['id' => 3, 'wording' => 'teacher']);
         Role::create(['id' => 4, 'wording' => 'student']);
 
+        // Créer un utilisateur admin par defaut 
+        User::create([
+            'firstname' => 'John',
+            'lastname' => 'Doe',
+            'phone' => '1234567890',
+            'email' => 'admin@example.com',
+            'email_verified_at' => now(),
+            'password' => bcrypt('password'),
+            'remember_token' => Str::random(10),
+            'role_id' => 1,
+        ]);
+
         // Créer des utilisateurs et associer des rôles aléatoires
         User::factory()->count(20)->create();
-
-       
-            User::create([
-                'firstname' => 'John',
-                'lastname' => 'Doe',
-                'phone' => '1234567890',
-                'email' => 'admin@example.com',
-                'email_verified_at' => now(),
-                'password' => bcrypt('password'),
-                'remember_token' => Str::random(10),
-                'role_id' => 1,
-            ]);
-        
         // Créer des séries, classes et matières
         Serie::factory()->count(1)->create();
         Subject::factory()->count(5)->create();
         Schoolyear::factory()->count(3)->create();
-        Classroom::factory()->count(1)->create(); // Ajout de la création de Classroom
+        Classroom::factory()->count(1)->create(); 
 
         // Créer les types de paiement
         PaymentType::create([

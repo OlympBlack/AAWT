@@ -61,10 +61,10 @@
                             </form>
                         @endif
                     @endforeach
-                    <form action="{{ route('semesters.destroy', $semester->id) }}" method="POST" class="ml-2">
+                    <form id="delete-form-{{ $semester->id }}" action="{{ route('semesters.destroy', $semester->id) }}" method="POST" class="ml-2">
                         @csrf
                         @method('DELETE')
-                        <x-button type="submit" class="bg-red-600 hover:bg-red-700" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce semestre ?')">
+                        <x-button type="button" class="bg-red-600 hover:bg-red-700" onclick="confirmDelete('{{ $semester->id }}')">
                             <span class="mdi mdi-delete mr-2"></span>
                             {{ __('Supprimer') }}
                         </x-button>
@@ -73,4 +73,11 @@
             </div>
         </div>
     </div>
+    
+
+    <!-- Inclure SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{asset('js/delete-confirmation.js')}} "></script>  
+
 </x-app-layout>

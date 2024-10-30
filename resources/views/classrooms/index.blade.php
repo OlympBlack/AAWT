@@ -59,26 +59,8 @@
         </div>
     </div>
 
-    <!-- Inclure SweetAlert2 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+      <!-- Inclure SweetAlert2 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <script>
-        function confirmDelete(classroomId) {
-            Swal.fire({
-                title: 'Êtes-vous sûr ?',
-                text: 'Cette action est irréversible et supprimera la salle de classe.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Oui, supprimer !',
-                cancelButtonText: 'Annuler'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('delete-form-' + classroomId).submit();
-                }
-            });
-        }
-    </script>
+    <script src="{{asset('js/delete-confirmation.js')}} "></script>  
 </x-app-layout>
