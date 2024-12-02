@@ -1,3 +1,4 @@
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -9,7 +10,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
                 @if($canPay)
-                    <form method="POST" action="{{ route('parent.process-payment', $registration->id) }}">
+                    <form method="POST" action="">
+                    @csrf
                         @if ($errors->any())
                 <div class="mb-4">
                     <div class="font-medium text-red-600">
@@ -23,7 +25,7 @@
                     </ul>
                 </div>
                 @endif
-                        @csrf
+                       
                         <div class="mb-6 p-4 bg-gray-50 rounded-lg">
                             <h3 class="text-lg font-semibold mb-2">Récapitulatif</h3>
                             <p class="text-gray-600">Montant total de la scolarité : <span class="font-semibold">{{ number_format($registration->classroom->costs, 0, ',', ' ') }} FCFA</span></p>
@@ -48,24 +50,46 @@
                             </div>
                         </div>
 
-                        <div class="mb-4">
+                        <!--<div class="mb-4">
                             <label for="payment_mode_id" class="block text-sm font-medium text-gray-700">Moyen de paiement</label>
                             <select name="payment_mode_id" id="payment_mode_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>
                                 @foreach($paymentModes as $mode)
                                     <option value="{{ $mode->id }}">{{ $mode->wording }}</option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div>-->
 
-                        <div class="flex items-center justify-end mt-6">
-                            <x-button class="ml-4">
-                                {{ __('Effectuer le paiement') }}
+                        
+                    </form>
+                    <div class="flex items-center justify-end mt-6">
+                            <x-button class="ml-4 payer-sco" id="feda">
+                                <form id="payment-form" action="index.php" method="POST">
+                                    <script
+                                        src="https://cdn.fedapay.com/checkout.js?v=1.1.5"
+                                        data-public-key="pk_sandbox_o_K33zrGMCW21eF1AfxKkezN"
+                                        data-button-text="Payer Maintenant"
+                                        data-button-class="payer-sco"
+                                        data-transaction-description="Paiement de scolarité"
+                                        data-currency-iso="XOF"
+                                        data-customer-email="{{ auth()->user()->email }}    "
+                                        data-customer-lastname="{{ auth()->user()->lastname }}"
+                                        data-customer-firstname="{{ auth()->user()->firstname }}"
+                                        data-transaction-amount="10000"
+                                    ></script>
+                                </form>
+                               <!-- {{ __('Effectuer le paiement') }}-->
                             </x-button>
                         </div>
-                    </form>
 
+
+                    
+                       
                     <script>
-                        document.addEventListener('DOMContentLoaded', function() {
+                            
+
+
+
+                            document.addEventListener('DOMContentLoaded', function() {
                             const paymentModeSelect = document.getElementById('payment_mode');
                             const amountInput = document.getElementById('amount');
                             const totalAmount = {{ $registration->classroom->costs }};
